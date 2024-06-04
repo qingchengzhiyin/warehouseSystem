@@ -1,0 +1,62 @@
+# 开发环境专用配置文件
+
+#  服务器启动的端口号
+server:
+  port: 8080
+
+spring:
+
+  #    项目的名称
+  application:
+    name: warehouse
+
+  #    下面的数据源配置一定要改成你自己电脑上的配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 12345678
+    url: jdbc:mysql://localhost:3306/warehouse?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+
+  #  配置Json序列化,不要改动
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      indent_output: false
+      fail_on_empty_beans: false
+    defaultPropertyInclusion: NON_NULL
+    deserialization:
+      fail_on_unknown_properties: false
+    parser:
+      allow_unquoted_control_chars: true
+      allow_single_quotes: true
+
+  #下面这个mvc和web配置，是为了使请求不存在的url时，能够按照通用返回模板返回（在全局异常处理器捕获NoHandlerFoundException即可）
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+#  mapper对应的xml文件存放路径
+mybatis:
+  mapper-locations: mapper/*.xml
+
+#  配置分页插件
+pagehelper:
+  helperDialect: mysql
+
+# 暴露监控指标，通过GET http://127.0.0.1:8080/actuator/prometheus 可获取运行时信息
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+jwt:
+  #  jwt工具类加密用的密码
+  secret: devhub
+  #  jwt工具类设定的有效时间,以天为单位
+  expiration: 7
