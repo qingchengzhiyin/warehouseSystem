@@ -33,7 +33,10 @@ public class ServiceAspect {
                 joinPoint.getSignature().getDeclaringTypeName(),
                 joinPoint.getSignature().getName(),
                 objectMapper.writeValueAsString(result));
-        log.info(String.valueOf(endTime - startTime));
+        log.info("用时{} <类>{} <方法>{}",
+                String.valueOf(endTime - startTime),
+                joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName());
         return result;
     }
 }
