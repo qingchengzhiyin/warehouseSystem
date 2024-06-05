@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 public class ServiceAspect {
     @Autowired
     private ObjectMapper objectMapper;
-    @Around("execution(* nwpu.group20.warehouse.service*.*(..))")
+    @Around("execution(* nwpu.group20.warehouse.service.impl..*(..))")
     public Object printLog(ProceedingJoinPoint joinPoint) throws Throwable{
         log.info("进入方法 <类>{},<方法>{},<参数>{}",
                 joinPoint.getSignature().getDeclaringTypeName(),
