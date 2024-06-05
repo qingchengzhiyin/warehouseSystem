@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+
 @Slf4j//可以直接在代码写console.log
 @Validated//可以限制传入参数
 @RequestMapping("/user")
@@ -34,7 +35,7 @@ public class UserController {
 
     @PostMapping("/login")
     public User login(@RequestBody @Valid LoginParam loginParam, HttpServletResponse response) throws Exception {
-        User user = userService.login(loginParam.getUserNickName(),loginParam.getUserPassword());
+        User user = userService.login(loginParam.getUserNickname(),loginParam.getUserPassword());
         String token = jwtUtil.creatJWT(user);
         response.setHeader("token",token);
         log.info("登陆"+token);

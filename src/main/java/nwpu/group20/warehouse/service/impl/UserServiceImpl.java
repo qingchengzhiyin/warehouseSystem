@@ -52,13 +52,13 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = null;
         try {
             authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userNickname, password));
-
+            log.info(authentication.toString());
         } catch (AuthenticationException e) {
             log.warn("[登录失败]  尝试登录失败，失败原因：{}", e.getMessage());
             return null;
         }
         // 确保authentication不为null
-        if (authentication != null && authentication.isAuthenticated()) {
+        if (authentication != null) {
             UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
             return userDetails.ToUser();
         }

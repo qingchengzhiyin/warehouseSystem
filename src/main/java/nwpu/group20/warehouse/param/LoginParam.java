@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class LoginParam {
     @NotBlank
-    private String userNickName;
+    private String userNickname;
     @NotBlank
     private String userPassword;
 

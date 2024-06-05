@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated() // 其他所有请求都需要认证
                 .and()
                 .formLogin() // 启用表单登录
-                .loginPage("/user/login") // 自定义登录页面
+                .loginPage("/login") // 自定义登录页面
                 .permitAll() // 允许访问登录页面
                 .and()
                 .logout() // 启用登出功能

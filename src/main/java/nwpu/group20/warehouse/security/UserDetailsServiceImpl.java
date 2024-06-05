@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         // 创建并返回UserDetails对象，通常使用org.springframework.security.core.userdetails.User
-        return new UserDetailsImpl (
+        return new UserDetailsImpl(
                 user.getUserNickname(), // 用户名
                 user.getUserPassword(), // 密码（通常是加密后的）
                 user.getUserType() // 用户的权限，你可能需要转换你的数据库模型到GrantedAuthority列表
