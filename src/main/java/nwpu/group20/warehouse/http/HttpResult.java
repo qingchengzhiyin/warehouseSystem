@@ -40,4 +40,9 @@ public class HttpResult<T> {
         this.code = code;
         this.msg = msg;
     }
+    public HttpResult(Integer code, String msg,T data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+    }
 }

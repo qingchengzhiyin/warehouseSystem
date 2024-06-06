@@ -10,19 +10,18 @@
         <result property="userType" column="user_type"/>
         <result property="userNickname" column="user_nickname"/>
     </resultMap>
-
+    <update id="changeUserInfo">
+        UPDATE user
+        SET user_nickname = #{userNickname},user_password = #{userPassword},user_type = #{userType},user_name = #{userName}
+        WHERE user_id = #{userId}
+    </update>
 
 
     <select id="loadAllUsers" resultMap="UserResultMap">
-        SELECT *
+        SELECT user_nickname,user_name,user_type
         FROM user
     </select>
 
-    <select id="loadPasswordByUserNickname" resultMap="UserResultMap">
-            SELECT userPassword
-            FROM user
-            WHERE user_nickname = #{userNickname}
-    </select>
 
     <select id="loadUserInfoByUserNickname" resultMap="UserResultMap">
         SELECT *
@@ -32,7 +31,17 @@
 
     <select id="insert" resultMap="UserResultMap">
         INSERT INTO user (user_id,user_name, user_password, user_type, user_nickname)
-        VALUES (2,#{userName}, #{userPassword}, #{userType}, #{userNickname});
+        VALUES (#{userName}, #{userPassword}, #{userType}, #{userNickname});
+    </select>
+
+    <select id="removeUserByUserId" resultMap="UserResultMap">
+        DELETE FROM user
+        WHERE user_id = #{userId}
+    </select>
+    <select id="loadUserByUserId" resultMap="UserResultMap">
+        SELECT *
+        FROM user
+        WHERE user_id = #{userId}
     </select>
 
 </mapper>

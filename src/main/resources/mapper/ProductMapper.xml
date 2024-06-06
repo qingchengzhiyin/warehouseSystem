@@ -2,6 +2,111 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="nwpu.group20.warehouse.mapper.ProductMapper">
 
+    <resultMap id="ProductResultMap" type="nwpu.group20.warehouse.entity.Product">
+        <id property="productId" column="product_id"/>
+        <result property="description" column="description"/>
+        <result property="provider" column="provider"/>
+        <result property="cost" column="cost"/>
+        <result property="price" column="price"/>
+    </resultMap>
+
+    <resultMap id="ProductVoResultMap" type="nwpu.group20.warehouse.vo.ProductVo">
+        <id property="productId" column="product_id"/>
+        <result property="description" column="description"/>
+        <result property="provider" column="provider"/>
+        <result property="cost" column="cost"/>
+        <result property="price" column="price"/>
+        <result property="num" column="num"/>
+    </resultMap>
+
+    <resultMap id="ProductStockVoResultMap" type="nwpu.group20.warehouse.vo.ProductStockVo">
+        <id property="productId" column="product_id"/>
+        <result property="description" column="description"/>
+        <result property="provider" column="provider"/>
+        <result property="cost" column="cost"/>
+        <result property="price" column="price"/>
+        <result property="productionDate" column="production_date"/>
+        <result property="locationId" column="location_id"/>
+        <result property="num" column="number"/>
+    </resultMap>
+
+
+
+    <select id="loadAllProducts" resultMap="ProductVoResultMap">
+        SELECT
+            p.product_id,
+            p.description,
+            p.provider,
+            p.cost,
+            p.price,
+            COALESCE(SUM(s.number), 0) AS num
+        FROM
+            product p
+                LEFT JOIN
+            stock s ON p.product_id = s.product_id
+        GROUP BY
+            p.product_id, p.description, p.provider, p.cost, p.price;
+    </select>
+
+    <select id="loadProductById" parameterType="int" resultMap="ProductResultMap">
+        SELECT
+            product_id,
+            description,
+            provider,
+            cost,
+            price
+        FROM
+            product
+        WHERE
+            product_id = #{productId}
+    </select>
+    <select id="loadProductVoById" parameterType="int" resultMap="ProductVoResultMap">
+        SELECT
+            p.product_id,
+            p.description,
+            p.provider,
+            p.cost,
+            p.price,
+            COALESCE(SUM(s.number), 0) AS num
+        FROM
+            product p
+                LEFT JOIN
+            stock s ON p.product_id = s.product_id
+        WHERE
+            p.product_id = #{productId}
+        GROUP BY
+            p.product_id, p.description, p.provider, p.cost, p.price;
+    </select>
+
+    <update id="updateProductById">
+        UPDATE product
+        SET
+            description = #{product.description},
+            provider = #{product.provider},
+            cost = #{product.cost},
+            price = #{product.price}
+        WHERE
+            product_id = #{productId}
+    </update>
+
+    <select id="loadProductStockVoById" parameterType="int" resultMap="ProductStockVoResultMap">
+        SELECT
+            p.product_id,
+            p.description,
+            p.provider,
+            p.cost,
+            p.price,
+            s.production_date,
+            s.location_id,
+            s.number
+        FROM
+            product p
+                LEFT JOIN
+            stock s ON p.product_id = s.product_id
+        WHERE
+            p.product_id = #{productId}
+    </select>
+
 
 
 </mapper>

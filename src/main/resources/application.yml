@@ -16,6 +16,28 @@ spring:
     username: root
     password: 12345678
     url: jdbc:mysql://localhost:3306/storage?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    druid:
+      initialSize: 5   # 初始连接数
+      minIdle: 5        # 最小空闲连接数
+      maxActive: 20     # 最大活跃连接数
+      maxWait: 60000    # 最大等待时间（毫秒）
+      filter:
+        slf4j:
+          enabled: true # 开启日志功能
+        wall:
+          enabled: true # 开启防火墙功能
+        stat:
+          enabled: true # 开启sql监控功能
+          slow-sql-millis: 1000  # 配置SQL慢的标准
+          log-slow-sql: true # 是否开启记录执行慢的sql
+      stat-view-servlet:
+        enabled: true # 开启监控页功能
+        login-username: rex # 监控页登录账号
+        login-password: pwdofrex # 监控页登录密码
+        reset-enable: false # 配置是否允许重置监控信息
+      web-stat-filter:
+        enabled: true # 开启web监控
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*" # web监控白名单
 
   #  配置Json序列化,不要改动
   jackson:
