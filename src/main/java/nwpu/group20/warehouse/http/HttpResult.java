@@ -1,5 +1,6 @@
 package nwpu.group20.warehouse.http;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import nwpu.group20.warehouse.constant.ResponseEnum;
@@ -7,9 +8,15 @@ import nwpu.group20.warehouse.constant.ResponseEnum;
 
 @Data
 @NoArgsConstructor
+@Schema(description = "通用HTTP结果包装类")
 public class HttpResult<T> {
-    private Integer code;
+    @Schema(description = "状态码", example = "200")
+    private int code;
+
+    @Schema(description = "消息", example = "操作成功")
     private String msg;
+
+    @Schema(description = "数据")
     private T data;
 
     public HttpResult<T> ok(T t){

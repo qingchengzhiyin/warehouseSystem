@@ -1,6 +1,7 @@
 package nwpu.group20.warehouse.mapper;
 
 import nwpu.group20.warehouse.entity.Product;
+import nwpu.group20.warehouse.param.ProductInfoParam;
 import nwpu.group20.warehouse.vo.ProductStockVo;
 import nwpu.group20.warehouse.vo.ProductVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,4 +19,8 @@ public interface ProductMapper {
 
     ProductVo loadProductVoById(int productId);
     List<ProductStockVo> loadProductStockVoById(@Param("productId") int productId);
+
+    void insertProduct(ProductInfoParam productInfoParam);
+
+    void deleteProduct(int productId);
 }

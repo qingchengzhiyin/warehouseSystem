@@ -16,4 +16,8 @@ public interface ProductService {
     ProductVo loadProductVoById(int userId);
 
     public List<ProductStockVo> loadProductStockVoById(int productId);
+
+    void insertProduct(ProductInfoParam productInfoParam);
+
+    void deleteProduct(int productId);
 }

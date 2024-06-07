@@ -41,5 +41,15 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.loadProductStockVoById(productId);
     }
 
+    @Override
+    public void insertProduct(ProductInfoParam productInfoParam) {
+        productMapper.insertProduct(productInfoParam);
+    }
+
+    @Override
+    public void deleteProduct(int productId) {
+        productMapper.deleteProduct(productId);
+    }
+
 
 }

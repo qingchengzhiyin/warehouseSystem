@@ -19,4 +19,8 @@ public interface UserMapper {
     void changeUserInfo(int userId, String userNickname, String userPassword, int userType, String userName);
 
     User loadUserByUserId(int userId);
+
+    List<Integer> getOperatorIds();
+
+    int getUserType(int userId);
 }

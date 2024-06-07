@@ -4,11 +4,23 @@
 server:
   port: 8080
 
+
+springdoc:
+  api-docs:
+    path: /api-docs
+
+
 spring:
 
   #    项目的名称
   application:
     name: warehouse
+
+  redis:
+    host: localhost
+    port: 6379
+
+
 
   #    下面的数据源配置一定要改成你自己电脑上的配置
   datasource:

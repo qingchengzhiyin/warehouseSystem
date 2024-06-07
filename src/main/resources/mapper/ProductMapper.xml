@@ -29,7 +29,14 @@
         <result property="locationId" column="location_id"/>
         <result property="num" column="number"/>
     </resultMap>
-
+    <insert id="insertProduct" parameterType="nwpu.group20.warehouse.param.ProductInfoParam">
+        INSERT INTO product (description, provider, cost, price)
+        VALUES (#{description}, #{provider}, #{cost}, #{price})
+    </insert>
+    <delete id="deleteProduct">
+        DELETE FROM product
+        WHERE product_id = #{productId}
+    </delete>
 
 
     <select id="loadAllProducts" resultMap="ProductVoResultMap">
@@ -106,6 +113,8 @@
         WHERE
             p.product_id = #{productId}
     </select>
+
+
 
 
 

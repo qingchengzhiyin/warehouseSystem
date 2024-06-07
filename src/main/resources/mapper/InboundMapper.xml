@@ -2,6 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="nwpu.group20.warehouse.mapper.InboundMapper">
 
+    <resultMap id="InboundResultMap" type="nwpu.group20.warehouse.entity.Inbound">
+        <id property="inboundOrderId" column="inbound_order_id"/>
+        <result property="inboundOrderDescription" column="inbound_order_description"/>
+        <result property="managerId" column="manager_id"/>
+        <result property="operatorId" column="operator_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isFinshed" column="isfinished"/>
+    </resultMap>
 
+
+
+    <insert id="insertInbound" parameterType="nwpu.group20.warehouse.param.InboundParam" useGeneratedKeys="true" keyProperty="inboundOrderId">
+        <selectKey keyProperty="inboundOrderId" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO inbound (inbound_order_description, manager_id, operator_id, create_time, update_time, isfinished)
+        VALUES (#{inboundOrderDescription}, #{managerId}, #{operatorId}, #{createTime}, #{updateTime}, #{isFinshed})
+    </insert>
+
+
+    <!-- Delete inbound record by ID -->
+    <delete id="deleteInbound" parameterType="int">
+        DELETE FROM inbound WHERE inbound_order_id = #{inboundOrderId}
+    </delete>
+
+    <select id="selectInboundById" resultMap="InboundResultMap">
+        SELECT * FROM inbound WHERE inbound_order_id = #{inboundOrderId}
+    </select>
+    <select id="getOperatorTaskCounts" resultType="map">
+        SELECT operator_id, COUNT(*) AS task_count FROM inbound GROUP BY operator_id
+    </select>
 
 </mapper>
