@@ -9,10 +9,15 @@
         <result property="operatorId" column="operator_id"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
-        <result property="isFinshed" column="isfinished"/>
+        <result property="isFinished" column="isfinished"/>
     </resultMap>
 
 
+    <!-- 用于接收一定时间范围内所有实际入库量的map -->
+    <resultMap id="InboundSelectByTimeResultMap" type="nwpu.group20.warehouse.param.BoundNumberParam">
+        <result property="date" column="date"/>
+        <result property="totalNumber" column="total_number"/>
+    </resultMap>
 
     <insert id="insertInbound" parameterType="nwpu.group20.warehouse.param.InboundParam" useGeneratedKeys="true" keyProperty="inboundOrderId">
         <selectKey keyProperty="inboundOrderId" order="AFTER" resultType="int">
@@ -21,6 +26,11 @@
         INSERT INTO inbound (inbound_order_description, manager_id, operator_id, create_time, update_time, isfinished)
         VALUES (#{inboundOrderDescription}, #{managerId}, #{operatorId}, #{createTime}, #{updateTime}, #{isFinshed})
     </insert>
+    <update id="completeFinish">
+        UPDATE inbound
+        SET isfinished = 1
+        WHERE inbound_order_id = #{inboundOrderId}
+    </update>
 
 
     <!-- Delete inbound record by ID -->
@@ -33,6 +43,18 @@
     </select>
     <select id="getOperatorTaskCounts" resultType="map">
         SELECT operator_id, COUNT(*) AS task_count FROM inbound GROUP BY operator_id
+    </select>
+    <select id="loadAllInbounds" resultMap="InboundResultMap">
+        SELECT * FROM inbound
+    </select>
+    <select id="selectInboundByDate" resultMap="InboundSelectByTimeResultMap">
+        select DATE (update_time) AS 'date',
+            SUM(inbound_number_ture) AS 'total_number'
+        from inbound_details
+            left join inbound
+        on inbound_details.inbound_order_id = inbound.inbound_order_id
+        where (update_time between #{startTime} and #{endTime}) and (isfinished = 1)
+        group by DATE (update_time);
     </select>
 
 </mapper>

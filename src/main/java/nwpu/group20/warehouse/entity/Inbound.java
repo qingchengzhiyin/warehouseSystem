@@ -11,5 +11,5 @@ public class Inbound {
     int operatorId;
     Date createTime;
     Date updateTime;
-    int isFinshed;
+    int isFinished;
 }

@@ -1,6 +1,10 @@
 package nwpu.group20.warehouse.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
+import nwpu.group20.warehouse.util.CustomDateDeserializer;
+import nwpu.group20.warehouse.util.CustomDateSerializer;
 
 import java.util.Date;
 @Data
@@ -14,7 +18,9 @@ public class InboundDetailsVo {
     int isFinished;
     int productId;
     int locationId;
+    @JsonSerialize(using = CustomDateSerializer.class)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     Date productionDate;
-    int inbound_number_theoretical;
-    int inbound_number_true;
+    int inboundNumberTheoretical;
+    int inboundNumberTrue;
 }
