@@ -24,6 +24,11 @@
         INSERT INTO outbound (outbound_order_description, manager_id, operator_id, create_time, update_time, isfinished)
         VALUES (#{outboundOrderDescription}, #{managerId}, #{operatorId}, #{createTime}, #{updateTime}, #{isFinished})
     </insert>
+    <update id="completeFinish">
+        update outbound
+        set isfinished = 1
+        where outbound_order_id = #{outboundOrederId}
+    </update>
 
     <!-- Delete outbound record by ID -->
     <delete id="deleteOutbound" parameterType="int">

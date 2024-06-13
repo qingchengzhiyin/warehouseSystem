@@ -2,6 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="nwpu.group20.warehouse.mapper.LocationMapper">
 
+    <!-- 映射LocationVo -->
+    <resultMap id="LocationVoResultMap" type="nwpu.group20.warehouse.vo.LocationVo">
+        <id property="locationId" column="location_id"/>
+        <result property="capacity" column="capacity"/>
+        <result property="capacityUse" column="capacity_use"/>
+    </resultMap>
 
+    <!-- 查询所有库位信息 -->
+    <select id="loadAllLocations" resultMap="LocationVoResultMap">
+        select * From location
+    </select>
+
+    <!-- 通过id查询库位信息 -->
+    <select id="loadLocationById" resultMap="LocationVoResultMap">
+        select * FROM location where location_id = #{locationId}
+    </select>
+
+    <!-- 通过库位id和库存变化量更改对应库位余量-->
+    <update id="changeLocationById">
+        UPDATE location
+        SET capacity_use = CASE
+        WHEN capacity_use + #{capacityChange} >=0 and location.capacity >= capacity_use + #{capacityChange}
+            THEN capacity_use + #{capacityChange}
+        ELSE capacity_use
+        END
+        WHERE location_id = #{locationId};
+    </update>
 
 </mapper>

@@ -4,8 +4,7 @@ import lombok.Data;
 import nwpu.group20.warehouse.param.InboundAddParam;
 import nwpu.group20.warehouse.param.InboundDetailsParam;
 import nwpu.group20.warehouse.param.InboundParam;
-import nwpu.group20.warehouse.param.finalParam.part.InboundFinalAddParamPart1;
-import org.springframework.beans.factory.annotation.Autowired;
+import nwpu.group20.warehouse.param.InboundFinalAddParamPart1;
 
 import java.util.List;
 

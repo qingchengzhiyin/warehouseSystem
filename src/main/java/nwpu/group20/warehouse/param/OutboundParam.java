@@ -1,7 +1,6 @@
 package nwpu.group20.warehouse.param;
 
 import lombok.Data;
-import nwpu.group20.warehouse.param.finalParam.part.OutboundFinalAddParamPart1;
 
 import java.util.Date;
 

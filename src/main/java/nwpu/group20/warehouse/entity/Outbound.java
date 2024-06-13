@@ -6,7 +6,7 @@ import java.util.Date;
 @Data
 public class Outbound {
     int outboundOrderId;
-    int outboundOrderDescription;
+    String outboundOrderDescription;
     int managerId;
     int operatorId;
     Date CreateTime;

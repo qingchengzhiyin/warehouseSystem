@@ -2,7 +2,6 @@ package nwpu.group20.warehouse.param;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nwpu.group20.warehouse.param.finalParam.part.OutboundFinalAddParamPart2;
 
 @Data
 @NoArgsConstructor

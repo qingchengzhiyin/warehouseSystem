@@ -1,4 +1,4 @@
-package nwpu.group20.warehouse.param.finalParam.part;
+package nwpu.group20.warehouse.param;
 
 import lombok.Data;
 

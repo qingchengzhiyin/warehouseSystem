@@ -2,6 +2,73 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="nwpu.group20.warehouse.mapper.CheckMapper">
 
+    <resultMap id="CheckResultMap" type="nwpu.group20.warehouse.vo.CheckVo">
+        <id property="checkId" column="check_id"/>
+        <result property="operatorId" column="operator_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
 
+    <resultMap id="CheckDetailsResultMap" type="nwpu.group20.warehouse.vo.CheckDetailsVo">
+        <id property="checkId" column="check_id"/>
+        <result property="operatorId" column="operator_id"/>
+        <result property="productId" column="product_Id"/>
+        <result property="checkNumberTheory" column="check_number_theory"/>
+        <result property="checkNumber" column="check_number"/>
+    </resultMap>
 
+    <resultMap id="StockNumberResultMap" type="nwpu.group20.warehouse.param.StockNumberParam">
+        <result property="number" column="checkNumber"/>
+    </resultMap>
+    <select id="loadAllChecks" resultMap="CheckResultMap">
+        select * from `check`
+    </select>
+
+    <insert id="insertCheck" parameterType="nwpu.group20.warehouse.param.CheckAddParam" useGeneratedKeys="true" keyProperty="checkId" keyColumn="check_id">
+        INSERT INTO `check` (operator_id,create_time,update_time)
+        VALUES (#{operatorId},NOW(),NOW())
+    </insert>
+
+    <insert id="insertCheckDetail" parameterType="nwpu.group20.warehouse.vo.CheckDetailsVo" >
+        INSERT INTO check_details (check_id,product_id,location_id,check_number_theory,check_number)
+        VALUES (#{checkId},#{productId},#{locationId},#{checkNumberTheory},#{checkNumber})
+    </insert>
+
+    <delete id="deleteCheck" >
+        delete from `check`
+        where check_id = #{checkId};
+    </delete>
+
+    <delete id="deleteCheckDetails">
+        delete
+        from check_details
+        where check_id = #{checkId};
+    </delete>
+
+    <select id="loadProductNumber" parameterType="int" resultType="nwpu.group20.warehouse.param.StockNumberParam">
+        select number
+        from stock
+        where product_id = #{productId} and location_id = #{locationId}
+    </select>
+    
+    <select id="loadCheckDetailById" resultMap="CheckDetailsResultMap">
+        select *
+        from check_details
+        where check_id = #{checkId}
+    </select>
+
+    <update id="changeCheckDetail">
+        update check_details
+        set check_number = #{checkNumber}
+        where
+              check_id = #{checkId}
+              product_id = #{productId}
+              location_id = #{locationId}
+    </update>
+
+    <update id="changeCheckUpdateTime">
+        update `check`
+        set update_time = NOW()
+        where check_id = #{checkId}
+    </update>
 </mapper>

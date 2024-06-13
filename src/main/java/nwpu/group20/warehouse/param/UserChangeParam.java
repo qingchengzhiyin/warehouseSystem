@@ -2,7 +2,7 @@ package nwpu.group20.warehouse.param.finalParam;
 
 import lombok.Data;
 import nwpu.group20.warehouse.param.InfoParam;
-import nwpu.group20.warehouse.param.finalParam.part.UserChangeParamChangePart;
+import nwpu.group20.warehouse.param.UserChangeParamChangePart;
 
 @Data
 public class UserChangeParam {
