@@ -1,5 +1,6 @@
 package nwpu.group20.warehouse.lock;
 
+import org.springframework.beans.factory.annotation.Value;
 import redis.clients.jedis.Jedis;
 
 import java.util.Collections;
@@ -8,7 +9,7 @@ import java.util.Collections;
  *redis分布锁,初始化要传入一个LockParam,使用方法要传入id
  * LockParam要传入键，也就是任务类型，还有占据时间和重试时间，有默认值可以不写
  */
-public class RedisLock {
+public class RedisLock implements AutoCloseable{
     private long tryLockEndTime;//终止获取锁的时间
     private String lockKey;
     private String lockValue;
@@ -17,6 +18,7 @@ public class RedisLock {
     private final String passwd = "password";
     private LockParam lockParam;
     private Jedis jedis;
+
     private final String releaseScript =
             "if redis.call('get', KEYS[1]) == ARGV[1] then " +
                     "return redis.call('del', KEYS[1]) " +
@@ -24,14 +26,14 @@ public class RedisLock {
                     "return 0 " +
                     "end";
 
-    public RedisLock(LockParam lockParam){
+    public RedisLock(LockParam lockParam,Jedis jedis){
         if(lockParam == null){
             throw new RuntimeException("LockParam is null");
         }
         this.lockKey = lockParam.getLockKey();
         this.tryLockEndTime = System.currentTimeMillis() + lockParam.getTryLockTime();
-        this.jedis = new Jedis("localhost",6379);
-        this.jedis.auth(passwd);
+        this.jedis = jedis;
+//        this.jedis.auth(passwd);
         this.lockParam = lockParam;
     }
 

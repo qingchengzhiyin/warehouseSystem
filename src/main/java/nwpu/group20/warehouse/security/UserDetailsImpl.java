@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
+    private int userId;
     private String userName;
     private String password;
     private User user;
@@ -19,12 +20,20 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -51,21 +60,26 @@ public class UserDetailsImpl implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
     public User ToUser(){
         User user =new User();
         user.setUserNickname(userName);
         user.setUserPassword(password);
+        user.setUserId(userId);
         return user;
     }
 
     public UserDetailsImpl(User user) {
-        this.userName = user.getUserName(); // 假设这是用于登录的用户名
+        this.userId = user.getUserId();
+        this.userName = user.getUserName();
         this.password = user.getUserPassword();
         this.authorities = createAuthorities(user.getUserType()); // 根据userType创建权限
     }
 
-    public UserDetailsImpl(String userName,String password,int authorities) {
-        this.userName = userName; // 假设这是用于登录的用户名
+    public UserDetailsImpl(int userId,String userName,String password,int authorities) {
+        this.userId= userId;
+        this.userName = userName;
         this.password = password;
         this.authorities = createAuthorities(authorities); // 根据userType创建权限
     }
@@ -73,11 +87,12 @@ public class UserDetailsImpl implements UserDetails {
     private Collection<? extends GrantedAuthority> createAuthorities(int userType) {
         // 这里只是一个示例，你需要根据实际的userType值来映射到对应的权限
         switch (userType) {
+            case 0:
+                return Arrays.asList(new SimpleGrantedAuthority("ROLE_MANAGER"));
             case 1:
-                return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+                return Arrays.asList(new SimpleGrantedAuthority("ROLE_OPERATOR"));
             case 2:
                 return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            // ... 添加其他类型的映射
             default:
                 return Arrays.asList(new SimpleGrantedAuthority("ROLE_DEFAULT"));
         }

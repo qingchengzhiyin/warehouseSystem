@@ -20,4 +20,6 @@ public interface ProductService {
     void insertProduct(ProductInfoParam productInfoParam);
 
     void deleteProduct(int productId);
+
+    String loadProductDescriptionById(int productId);
 }

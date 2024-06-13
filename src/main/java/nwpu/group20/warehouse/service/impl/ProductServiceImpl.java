@@ -25,6 +25,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void changeProductInfo(int productId, ProductInfoParam productInfoParam) {
         Product product = productMapper.loadProductById(productId);
+        if(product == null){
+            throw new  RuntimeException("库存不足");
+        }
         product.setDescription(productInfoParam.getDescription());
         product.setProvider(productInfoParam.getProvider());
         product.setCost(productInfoParam.getCost());
@@ -49,6 +52,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProduct(int productId) {
         productMapper.deleteProduct(productId);
+    }
+
+    @Override
+    public String loadProductDescriptionById(int productId) {
+        return productMapper.loadProductDescriptionById(productId);
     }
 
 

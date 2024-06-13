@@ -1,7 +1,55 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="nwpu.group20.warehouse.mapper.OutboundMapper">
 
+    <resultMap id="OutboundResultMap" type="nwpu.group20.warehouse.entity.Outbound">
+        <id property="outboundOrderId" column="outbound_order_id"/>
+        <result property="outboundOrderDescription" column="outbound_order_description"/>
+        <result property="managerId" column="manager_id"/>
+        <result property="operatorId" column="operator_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isFinished" column="isfinished"/>
+    </resultMap>
 
+    <!-- 用于接收一定时间范围内所有实际出库量的map -->
+    <resultMap id="OutboundSelectByTimeResultMap" type="nwpu.group20.warehouse.param.BoundNumberParam">
+        <result property="date" column="date"/>
+        <result property="totalNumber" column="total_number"/>
+    </resultMap>
+    <insert id="insertOutbound" parameterType="nwpu.group20.warehouse.param.OutboundParam" useGeneratedKeys="true" keyProperty="outboundOrderId">
+        <selectKey keyProperty="outboundOrderId" order="AFTER" resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO outbound (outbound_order_description, manager_id, operator_id, create_time, update_time, isfinished)
+        VALUES (#{outboundOrderDescription}, #{managerId}, #{operatorId}, #{createTime}, #{updateTime}, #{isFinished})
+    </insert>
+
+    <!-- Delete outbound record by ID -->
+    <delete id="deleteOutbound" parameterType="int">
+        DELETE FROM outbound WHERE outbound_order_id = #{outboundOrderId}
+    </delete>
+
+    <select id="selectOutboundById" resultMap="OutboundResultMap">
+        SELECT * FROM outbound WHERE outbound_order_id = #{outboundOrderId}
+    </select>
+
+    <select id="getOperatorTaskCounts" resultType="map">
+        SELECT operator_id, COUNT(*) AS task_count FROM outbound GROUP BY operator_id
+    </select>
+
+    <select id="loadAllOutbounds" resultMap="OutboundResultMap">
+        SELECT * FROM outbound
+    </select>
+
+    <select id="selectOutboundByDate" resultMap="OutboundSelectByTimeResultMap">
+        select DATE (update_time) AS 'date',
+            SUM(outbound_number) AS 'total_number'
+        from outbound_details
+            left join outbound o
+        on o.outbound_order_id = outbound_details.outbound_order_id
+        where (update_time between #{startTime} and #{endTime}) and (isfinished = 1)
+        group by DATE (update_time);
+    </select>
 
 </mapper>

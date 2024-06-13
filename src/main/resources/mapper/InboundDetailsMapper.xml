@@ -16,14 +16,14 @@
         <result property="productId" column="product_id"/>
         <result property="locationId" column="location_id"/>
         <result property="productionDate" column="production_date"/>
-        <result property="inbound_number_theoretical" column="inbound_number_theoretical"/>
-        <result property="inbound_number_true" column="inbound_number_ture"/>
+        <result property="inboundNumberTheoretical" column="inbound_number_theoretical"/>
+        <result property="inboundNumberTrue" column="inbound_number_ture"/>
     </resultMap>
 
     <!-- Insert inbound details -->
     <insert id="insertInboundDetails" parameterType="nwpu.group20.warehouse.param.InboundDetailsParam">
-        INSERT INTO inbound_details (inbound_order_id, product_id, location_id, production_date, inbound_number_theoretical, inbound_number_ture)
-        VALUES (#{inboundOrderId}, #{productId}, #{locationId}, #{productionDate}, #{inboundNumberTheoretical}, #{inboundNumberTure})
+        INSERT INTO inbound_details (inbound_order_id, product_id,  production_date, inbound_number_theoretical, inbound_number_ture)
+        VALUES (#{inboundOrderId}, #{productId},  #{productionDate}, #{inboundNumberTheoretical}, #{inboundNumberTure})
     </insert>
 
     <!-- Delete inbound details by order ID -->
@@ -54,4 +54,32 @@
         WHERE
             i.inbound_order_id = #{inboundOrderId}
     </select>
+    <select id="selectInboundDetailsById" parameterType="map" resultMap="InboundDetailsResultMap">
+        SELECT
+            i.inbound_order_id,
+            i.inbound_order_description,
+            i.manager_id,
+            i.operator_id,
+            i.create_time,
+            i.update_time,
+            i.isfinished,
+            d.product_id,
+            d.location_id,
+            d.production_date,
+            d.inbound_number_theoretical,
+            d.inbound_number_ture
+        FROM
+            inbound i
+                JOIN
+            inbound_details d ON i.inbound_order_id = d.inbound_order_id
+        WHERE
+            i.inbound_order_id = #{inboundOrderId} AND d.product_id = #{productId} AND d.production_date = #{productionDate}
+    </select>
+
+
+    <update id="updateInboundDetails" parameterType="nwpu.group20.warehouse.param.finalParam.InboundDetailsUpdateParam">
+        UPDATE inbound_details
+        SET location_id = #{locationId}, inbound_number_ture = #{inboundNumberTrue}
+        WHERE inbound_order_id = #{inboundOrderId} AND product_id = #{productId} AND production_date = #{productionDate}
+    </update>
 </mapper>

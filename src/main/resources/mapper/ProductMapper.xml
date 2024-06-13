@@ -113,9 +113,13 @@
         WHERE
             p.product_id = #{productId}
     </select>
-
-
-
+    <select id="loadProductDescriptionById" resultType="java.lang.String">
+        SELECT
+            description
+        FROM
+            product
+        WHERE product_id = #{productId}
+    </select>
 
 
 </mapper>

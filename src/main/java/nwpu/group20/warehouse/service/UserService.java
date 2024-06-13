@@ -17,5 +17,5 @@ public interface UserService {
 
     User loadUserByUserId(int productId);
 
-    void changeUserInfo(int userId,String userNickname, String userPassword, int userType, String userName);
+    void changeUserInfo(Integer userId, String userNickname, String userPassword, Integer userType, String userName);
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="nwpu.group20.warehouse.mapper.OutboundDetailsMapper">
+
+    <resultMap id="OutboundDetailsResultMap" type="nwpu.group20.warehouse.vo.OutboundDetailsVo">
+        <id property="outboundOrderId" column="outbound_order_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="outboundNumber" column="outbound_number"/>
+    </resultMap>
+
+    <!-- Insert outbound details -->
+    <insert id="insertOutboundDetails" parameterType="nwpu.group20.warehouse.param.OutboundDetailsParam">
+        INSERT INTO outbound_details (outbound_order_id, product_id, outbound_number)
+        VALUES (#{outboundOrderId}, #{productId}, #{outboundNumber})
+    </insert>
+
+    <!-- Delete outbound details by order ID -->
+    <delete id="deleteOutboundDetailsByOrderId" parameterType="int">
+        DELETE FROM outbound_details WHERE outbound_order_id = #{outboundOrderId}
+    </delete>
+
+    <select id="selectOutboundOrderById" resultMap="OutboundDetailsResultMap">
+        SELECT
+            o.outbound_order_id,
+            d.product_id,
+            d.outbound_number
+        FROM
+            outbound o
+                JOIN
+            outbound_details d ON o.outbound_order_id = d.outbound_order_id
+        WHERE
+            o.outbound_order_id = #{outboundOrderId}
+    </select>
+
+</mapper>

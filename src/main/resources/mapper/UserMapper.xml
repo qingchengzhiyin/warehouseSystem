@@ -12,13 +12,27 @@
     </resultMap>
     <update id="changeUserInfo">
         UPDATE user
-        SET user_nickname = #{userNickname},user_password = #{userPassword},user_type = #{userType},user_name = #{userName}
+        <set>
+            <if test="userNickname != null">
+                user_nickname = #{userNickname},
+            </if>
+            <if test="userPassword != null">
+                user_password = #{userPassword},
+            </if>
+            <if test="userType != null">
+                user_type = #{userType},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+        </set>
         WHERE user_id = #{userId}
     </update>
 
 
+
     <select id="loadAllUsers" resultMap="UserResultMap">
-        SELECT user_nickname,user_name,user_type
+        SELECT user_id,user_nickname,user_name,user_type
         FROM user
     </select>
 
@@ -30,7 +44,7 @@
     </select>
 
     <select id="insert" resultMap="UserResultMap">
-        INSERT INTO user (user_id,user_name, user_password, user_type, user_nickname)
+        INSERT INTO user (user_name, user_password, user_type, user_nickname)
         VALUES (#{userName}, #{userPassword}, #{userType}, #{userNickname});
     </select>
 

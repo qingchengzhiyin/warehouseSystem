@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nwpu.group20.warehouse.mapper.StockMapper">
+
+    <insert id="addStock" parameterType="list">
+        INSERT INTO stock (product_id, production_date, location_id, number, status)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.productId}, #{item.productionDate}, #{item.locationId}, #{item.number}, #{item.status})
+        </foreach>
+    </insert>
+
+    <insert id="addSingleStock" parameterType="nwpu.group20.warehouse.entity.Stock">
+        INSERT INTO stock (product_id, production_date, location_id, number, status)
+        VALUES (#{productId}, #{productionDate}, #{locationId}, #{number}, #{status})
+    </insert>
+
+    <select id="getTotalStock" parameterType="int" resultType="int">
+        SELECT COALESCE(SUM(number), 0)
+        FROM stock
+        WHERE product_id = #{productId} AND status = 0
+    </select>
+
+    <select id="getStockByProductIdOrderedByProductionDate" parameterType="int" resultType="nwpu.group20.warehouse.entity.Stock">
+        SELECT product_id, production_date, location_id, number, status
+        FROM stock
+        WHERE product_id = #{productId} AND status = 0
+        ORDER BY production_date ASC
+    </select>
+
+    <select id="getStock" parameterType="map" resultType="nwpu.group20.warehouse.entity.Stock">
+        SELECT product_id, production_date, location_id, number, status
+        FROM stock
+        WHERE product_id = #{productId} AND production_date = #{productionDate} AND location_id = #{locationId}
+    </select>
+
+    <update id="updateStock">
+        UPDATE stock
+        SET number = number + #{delta}
+        WHERE product_id = #{productId} AND production_date = #{productionDate} AND location_id = #{locationId}
+    </update>
+
+</mapper>
